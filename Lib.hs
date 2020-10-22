@@ -66,6 +66,7 @@ make2DArrayFromArray (x:xs) cal n = do
 make2DArrayFromArray [] _ _ = []
 
 
+
 helper1 (x:xs) y | isNothing x  && y == 0 = if ((unsafePerformIO (getStdRandom (randomR (0, 4))))::Int) > 3 then [Just 4] else [Just 2] ++ if not(null xs) then xs else []
 		             | not(isNothing x) && y == 0 = x : (helper1 xs y)
                  | isNothing x && y > 0 = x : helper1 xs (y - 1)
@@ -89,11 +90,7 @@ calculateNothings grid = calculate $ concat grid
 calculate (x:xs) | isNothing x = 1 + if not (null xs) then calculate xs else 0
                  | isJust x = 0 + if not (null xs) then calculate xs else 0
 
-addRandom grid = make2DArrayFromArray (helper1 (concat grid) random) [] len
-                where
-                random = getRandom nums
-                    where
-                    nums = calculateNothings grid
+addRandom grid = make2DArrayFromArray (helper1 (concat grid) $ randomRIO (0, calculateNothings grid)) [] len
                 len = length grid
 
 --game grid prev = do

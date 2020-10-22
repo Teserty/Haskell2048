@@ -73,7 +73,7 @@ viewReq (Just grid) = json grid
 
 
 test1 = TestCase (assertEqual "quicksort (quicksort [0,8,9,4,6,5,1])," [0,1,4,5,6,8,9] (quicksort [0,8,9,4,6,5,1]))
-test2 = TestCase (assertEqual "shift (shift [[Just 4, Just 4], [Nothing, Nothing]])," [Nothing, Just 8] (shift [Just 4, Just 4]))
+test2 = TestCase (assertEqual "shift (shift [[Just 4, Just 4], [Nothing, Nothing]])," [Just 8, Nothing] (shift [Just 4, Just 4]))
 tests = TestList [TestLabel "test1" test1, TestLabel "test2" test2]
 
 
@@ -88,17 +88,6 @@ main = do
                    pool <- createPool (newConn conf) close 1 40 10
                    scotty 3000 $ do
                        middleware simpleCors
-
-                      --  -- VIEW
-                      -- get    "/articles/:id" $ do id <- param "id" :: ActionM TL.Text -- get the article id from the request
-                      --                             maybeGrid <- liftIO $ findGrid pool id -- get the article from the DB
-                      --                             viewGrid maybeGrid            -- show the article if it was found
---
-                      -- -- CREATE
-                      -- post   "/admin/articles" $ do article <- getArticleParam
-                      --                               viewArticle article
---
-
                        get "/" $ do
                              json $ Grid createRandomStartWithoutError
                        post "/" $ do
@@ -107,20 +96,6 @@ main = do
                              let can = (canMakeTurn newGrid) :: Bool
                              let sc = cscore newGrid
                              json $ Responce newGrid can sc
-
-                   --get "/json" $ do
-                   --      json $ Req start' "L"
-                   --post "/t" $ do
-                   --      value <- jsonData :: ActionM Req
-                   --      json value
-                   --post "/game/:id" $ do
-                   --      val <- param "id"
-                   --      text val
-                   --post "/trash" $ do article <- jsonData
-                   --                   viewReq article
-                   --get "/trash" $ do
-                   --             json $ Req start' "L"
-
 
 getReqParam :: ActionT TL.Text IO (Maybe Req)
 getReqParam = do b <- body
