@@ -1,20 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="a288954e-5fec-4c4b-bc7d-c0d043aef076" name="Default Changelist" comment="" />
+    <list default="true" id="480d984e-f0d2-4f95-b13c-83fc68490ecf" name="Default Changelist" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ProjectId" id="1ieilwHj5CiaY92mdigykBBdpDB" />
+  <component name="ComposerSettings">
+    <execution>
+      <executable />
+    </execution>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectId" id="1ippSjSvS0oQYBQo3JiICvrvHIt" />
   <component name="PropertiesComponent">
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
+    <property name="com.intellij.ide.scratch.LRUPopupBuilder$1/New Scratch File" value="EditorConfig" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
+    <property name="nodejs_package_manager_path" value="npm" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="F:\hblog" />
+    </key>
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -28,29 +44,20 @@
       </list>
     </option>
   </component>
-  <component name="RunManager">
-    <configuration name="Unnamed" type="HaskellStackConfigurationType" factoryName="Haskell Stack REPL" nameIsGenerated="true" show_console_on_std_err="false" show_console_on_std_out="false">
-      <module name="webHaskell" />
-      <option name="allowRunningInParallel" value="false" />
-      <option name="stackArgs" value="" />
-      <option name="stackTarget" />
-      <option name="workingDirPath" value="$PROJECT_DIR$" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-  </component>
   <component name="SvnConfiguration">
     <configuration />
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="a288954e-5fec-4c4b-bc7d-c0d043aef076" name="Default Changelist" comment="" />
-      <created>1602274612810</created>
+      <changelist id="480d984e-f0d2-4f95-b13c-83fc68490ecf" name="Default Changelist" comment="" />
+      <created>1602614389690</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1602274612810</updated>
-      <workItem from="1602274614076" duration="25771000" />
+      <updated>1602614389690</updated>
+      <workItem from="1602614391051" duration="816000" />
+      <workItem from="1602618192962" duration="24708000" />
+      <workItem from="1602786080755" duration="26725000" />
+      <workItem from="1603019924361" duration="39162000" />
     </task>
     <servers />
   </component>
