@@ -28,7 +28,7 @@ add ts = ts
 pad :: [a] -> a -> Int -> [a]
 pad xs x n = take n (xs ++ repeat x)
 
-shift:: [Maybe Int] -> [Maybe Int]
+shift:: Board -> Board
 shift v = pad ts Nothing (length v)
   where
     ts = map Just (concatMap add (group (catMaybes v)))
@@ -58,6 +58,7 @@ rotate = map reverse . transpose
 
 start = [[Nothing, Nothing, Nothing, Nothing],[Nothing, Nothing, Nothing, Nothing],[Nothing, Nothing, Nothing, Nothing],[Nothing, Nothing, Nothing, Nothing]]
 
+make2DArrayFromArray:: Line -> Line -> Int -> Board
 make2DArrayFromArray (x:xs) cal n = do
 				let temp = cal ++ [x]
 				if length temp  == n
@@ -66,7 +67,7 @@ make2DArrayFromArray (x:xs) cal n = do
 make2DArrayFromArray [] _ _ = []
 
 
-
+helper1:: Line -> Int -> Line
 helper1 (x:xs) y | isNothing x  && y == 0 = if ((unsafePerformIO (getStdRandom (randomR (0, 4))))::Int) > 3 then [Just 4] else [Just 2] ++ if not(null xs) then xs else []
 		             | not(isNothing x) && y == 0 = x : (helper1 xs y)
                  | isNothing x && y > 0 = x : helper1 xs (y - 1)
@@ -74,7 +75,7 @@ helper1 (x:xs) y | isNothing x  && y == 0 = if ((unsafePerformIO (getStdRandom (
                  | otherwise = x : xs
 
 
-canMakeTurn::[[Maybe Int]]->Bool
+canMakeTurn::Board->Bool
 canMakeTurn grid = grid /= grid_d || grid /= grid_a || grid /= grid_w || grid /= grid_s where
             grid_d = rotate  $ rotate $ shift' $ rotate $ rotate grid
             grid_a = shift' grid
@@ -85,13 +86,21 @@ canMakeTurn grid = grid /= grid_d || grid /= grid_a || grid /= grid_w || grid /=
 getRandom:: Int -> Int
 getRandom n = ((unsafePerformIO (getStdRandom (randomR (0, 999))))::Int) `mod` n
 
+calculateNothings:: Board -> Int
+calculateNothings grid = calculate $ concat
 
-calculateNothings grid = calculate $ concat grid
+calculate:: Line -> Int
 calculate (x:xs) | isNothing x = 1 + if not (null xs) then calculate xs else 0
                  | isJust x = 0 + if not (null xs) then calculate xs else 0
 
-addRandom grid = make2DArrayFromArray (helper1 (concat grid) $ randomRIO (0, calculateNothings grid)) [] len
-                len = length grid
+
+
+addRandom:: Board -> Board
+addRandom grid = do
+                random <- randomRIO (0, calculateNothings grid)
+                let len = length grid
+                return make2DArrayFromArray (helper1 (concat grid) ) [] len
+
 
 --game grid prev = do
 --          printGrid grid
@@ -116,14 +125,19 @@ addRandom grid = make2DArrayFromArray (helper1 (concat grid) $ randomRIO (0, cal
 --		backMove    = rotate $ rotate $ rotate $ shift' $ rotate grid
 
 
+
+createRandomStart:: Board -> Int -> Board
 createRandomStart grid n | n > 1 =  createRandomStart (addRandom grid) (n-1)
                          | otherwise = addRandom grid
 
 
+createRandomStartWithoutError:: Board
 createRandomStartWithoutError = do
                   let grid = createRandomStart start 2
                   if (length $ concat grid) == 16 then grid
                   else createRandomStartWithoutError
+
+
 makeTurn:: [[Maybe Int]]-> Text -> [[Maybe Int]]
 makeTurn grid x =
     if canMakeTurn grid then
