@@ -73,8 +73,10 @@ viewReq (Just grid) = json grid
 
 
 test1 = TestCase (assertEqual "quicksort (quicksort [0,8,9,4,6,5,1])," [0,1,4,5,6,8,9] (quicksort [0,8,9,4,6,5,1]))
-test2 = TestCase (assertEqual "shift (shift [[Just 4, Just 4], [Nothing, Nothing]])," [Just 8, Nothing] (shift [Just 4, Just 4]))
-tests = TestList [TestLabel "test1" test1, TestLabel "test2" test2]
+test2 = TestCase (assertEqual "shift (shift [Just 4, Just 4])," [Just 8, Nothing] (shift [Just 4, Nothing]))
+test3 = TestCase (assertEqual "shift' (shift' [[Just 4, Just 4], [Nothing, Nothing]])," [[Just 8, Nothing], [Nothing, Nothing]] (shift' [[Just 4, Just 4], [Nothing, Nothing]]))
+test4 = TestCase (assertEqual "rotate (rotate [[Just 4, Just 4], [Nothing, Nothing]])," [[Just 4, Nothing], [Just 4, Nothing]] (rotate [[Just 4, Just 4], [Nothing, Nothing]]))
+tests = TestList [TestLabel "test1" test1, TestLabel "test2" test2, TestLabel "test1" test3, TestLabel "test2" test4, TestLabel "test1" test5]
 
 
 main :: IO ()

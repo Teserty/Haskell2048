@@ -28,7 +28,7 @@ add ts = ts
 pad :: [a] -> a -> Int -> [a]
 pad xs x n = take n (xs ++ repeat x)
 
-shift:: Board -> Board
+shift:: Line -> Line
 shift v = pad ts Nothing (length v)
   where
     ts = map Just (concatMap add (group (catMaybes v)))
@@ -64,7 +64,7 @@ make2DArrayFromArray (x:xs) cal n = do
 				if length temp  == n
 						then temp  : make2DArrayFromArray xs [] n
 						else make2DArrayFromArray xs (temp) n
-make2DArrayFromArray [] _ _ = []
+make2DArrayFromArray [] _ _ = [[]]
 
 
 helper1:: Line -> Int -> Line
@@ -87,7 +87,7 @@ getRandom:: Int -> Int
 getRandom n = ((unsafePerformIO (getStdRandom (randomR (0, 999))))::Int) `mod` n
 
 calculateNothings:: Board -> Int
-calculateNothings grid = calculate $ concat
+calculateNothings grid = calculate $ concat grid
 
 calculate:: Line -> Int
 calculate (x:xs) | isNothing x = 1 + if not (null xs) then calculate xs else 0
@@ -97,9 +97,12 @@ calculate (x:xs) | isNothing x = 1 + if not (null xs) then calculate xs else 0
 
 addRandom:: Board -> Board
 addRandom grid = do
-                random <- randomRIO (0, calculateNothings grid)
-                let len = length grid
-                return make2DArrayFromArray (helper1 (concat grid) ) [] len
+                    --random <- randomRIO (0, (calculateNothings grid)::Int)
+                    let random = calculateNothings grid
+                    let len = length grid
+                    let arr = (helper1 (concat grid) random)::Line
+                    let grid = make2DArrayFromArray arr [] len
+                    return grid
 
 
 --game grid prev = do

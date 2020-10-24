@@ -25,20 +25,20 @@ instance ToJSON Responce
 instance FromJSON Responce
 
 
-getGrid:: Req -> [[Maybe Int]]
-getGrid (Req grid _) = grid
-
-
-getTurn:: Req -> TX.Text
-getTurn (Req _ turn) = turn
-
-
-toString:: [Maybe Int]-> String
-toString (x:xs) | (not $ isNothing x) && (not (null xs)) = (show (fromJust x)) ++ " " ++ toString xs
-		| (not $ isNothing x) && (null xs) = show $ fromJust x
-		| (isNothing x) && (not (null xs)) = (show 0 ) ++ " " ++ toString xs
-		| (isNothing x) && (null xs) = show 0
-
+--getGrid:: Req -> [[Maybe Int]]
+--getGrid (Req grid _) = grid
+--
+--
+--getTurn:: Req -> TX.Text
+--getTurn (Req _ turn) = turn
+--
+--
+--toString:: [Maybe Int]-> String
+--toString (x:xs) | (not $ isNothing x) && (not (null xs)) = (show (fromJust x)) ++ " " ++ toString xs
+--		| (not $ isNothing x) && (null xs) = show $ fromJust x
+--		| (isNothing x) && (not (null xs)) = (show 0 ) ++ " " ++ toString xs
+--		| (isNothing x) && (null xs) = show 0
+--
 
 --make2DArrayFromArray:: [String] -> a1 -> Int -> a2
 --make2DArrayFromArray (x:xs) cal n = do
