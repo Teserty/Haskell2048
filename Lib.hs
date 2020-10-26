@@ -1,6 +1,8 @@
 {-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE TemplateHaskell   #-}
+{-# LANGUAGE DeriveGeneric #-}
 module Lib
-    ( add, shift', shift, Board, Line, Tile, makeTurn, canMakeTurn, createRandomStart, addRandom, getRandom, helper1, make2DArrayFromArray, createRandomStartWithoutError, cscore, quicksort, toIntArr
+    (add, shift', rotate, shift, Board, Line, Tile, makeTurn, canMakeTurn, createRandomStart, addRandom, getRandom, helper1, make2DArrayFromArray, createRandomStartWithoutError, cscore, quicksort, toIntArr
     ) where
 
 import Data.Maybe (catMaybes, isNothing, fromJust, isJust)
@@ -10,14 +12,18 @@ import System.IO
 import           Data.Text.Lazy     (Text)
 import System.IO.Unsafe
 import System.IO
+
 import System.Random
+import Data.Aeson
+import Data.Maybe
+import Control.Applicative
+import GHC.Generics
 
 
 type Tile = Maybe Int
 type Line = [Tile]
 type Board = [Line]
 data Action = L | R | T| D | Exit
-
 
 
 
@@ -83,8 +89,13 @@ canMakeTurn grid = grid /= grid_d || grid /= grid_a || grid /= grid_w || grid /=
             grid_s = rotate $ rotate $ rotate $ shift' $ rotate grid
 
 
-getRandom:: Int -> Int
-getRandom n = ((unsafePerformIO (getStdRandom (randomR (0, 999))))::Int) `mod` n
+--getRandom:: Int -> Int
+--getRandom n = ((unsafePerformIO (getStdRandom (randomR (0, 999))))::Int) `mod` n
+
+
+getRandom :: Int -> Int
+getRandom i = fst (next (mkStdGen i)) `mod` i
+
 
 calculateNothings:: Board -> Int
 calculateNothings grid = calculate $ concat grid
@@ -96,13 +107,12 @@ calculate (x:xs) | isNothing x = 1 + if not (null xs) then calculate xs else 0
 
 
 addRandom:: Board -> Board
-addRandom grid = do
-                    --random <- randomRIO (0, (calculateNothings grid)::Int)
-                    let random = calculateNothings grid
-                    let len = length grid
-                    let arr = (helper1 (concat grid) random)::Line
-                    let grid = make2DArrayFromArray arr [] len
-                    return grid
+addRandom grid = make2DArrayFromArray arr [] len
+
+                 where
+                    random = getRandom ((calculateNothings grid)::Int)
+                    len = length grid
+                    arr = (helper1 (concat grid) random)::Line
 
 
 --game grid prev = do

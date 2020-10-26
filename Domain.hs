@@ -11,26 +11,7 @@ import Data.Aeson
 import Data.Maybe
 import Control.Applicative
 
-data Grid = Grid {grid :: [[Maybe Integer]]} deriving (Show, Generic)
-instance ToJSON Grid
-instance FromJSON Grid
-data GridBD = GridBD {id:: Int, gr:: TX.Text} deriving (Show, Generic)
-instance ToJSON GridBD
-instance FromJSON GridBD
-data Req = Req {sendgr:: [[Maybe Int]], turn:: TX.Text} deriving (Show, Generic)
-instance ToJSON Req
-instance FromJSON Req
-data Responce = Responce {sendGrid :: [[Maybe Int]], canGo:: Bool, score::Int} deriving (Show, Generic)
-instance ToJSON Responce
-instance FromJSON Responce
 
-
---getGrid:: Req -> [[Maybe Int]]
---getGrid (Req grid _) = grid
---
---
---getTurn:: Req -> TX.Text
---getTurn (Req _ turn) = turn
 --
 --
 --toString:: [Maybe Int]-> String
