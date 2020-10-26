@@ -74,12 +74,13 @@ make2DArrayFromArray [] _ _ = [[]]
 
 
 helper1:: Line -> Int -> Line
-helper1 (x:xs) y | isNothing x  && y == 0 = if ((unsafePerformIO (getStdRandom (randomR (0, 4))))::Int) > 3 then [Just 4] else [Just 2] ++ if not(null xs) then xs else []
+helper1 (x:xs) y | isNothing x  && y == 0 = if random > 3 then [Just 4] else [Just 2] ++ if not(null xs) then xs else []
 		             | not(isNothing x) && y == 0 = x : (helper1 xs y)
                  | isNothing x && y > 0 = x : helper1 xs (y - 1)
                  | not(isNothing x) && y > 0 = x : helper1 xs y
                  | otherwise = x : xs
-
+                                          where
+                                              random = getRandom (4)
 
 canMakeTurn::Board->Bool
 canMakeTurn grid = grid /= grid_d || grid /= grid_a || grid /= grid_w || grid /= grid_s where
