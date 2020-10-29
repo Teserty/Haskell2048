@@ -10,7 +10,6 @@ import Data.List (transpose)
 import Data.List (group)
 import System.IO
 import           Data.Text.Lazy     (Text)
-import System.IO.Unsafe
 import System.IO
 
 import System.Random
@@ -90,16 +89,13 @@ canMakeTurn grid = grid /= grid_d || grid /= grid_a || grid /= grid_w || grid /=
             grid_s = rotate $ rotate $ rotate $ shift' $ rotate grid
 
 
---getRandom:: Int -> Int
---getRandom n = ((unsafePerformIO (getStdRandom (randomR (0, 999))))::Int) `mod` n
-
-
 getRandom :: Int -> Int
 getRandom i = fst (next (mkStdGen i)) `mod` i
 
 
 calculateNothings:: Board -> Int
 calculateNothings grid = calculate $ concat grid
+
 
 calculate:: Line -> Int
 calculate (x:xs) | isNothing x = 1 + if not (null xs) then calculate xs else 0
