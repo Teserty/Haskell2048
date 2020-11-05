@@ -1,6 +1,10 @@
-{-# LANGUAGE OverloadedStrings #-}
-{-# LANGUAGE TemplateHaskell   #-}
+{-# LANGUAGE DataKinds #-}
 {-# LANGUAGE DeriveGeneric #-}
+{-# LANGUAGE FlexibleInstances #-}
+{-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE StandaloneDeriving #-}
+{-# LANGUAGE TypeOperators #-}
+
 
 module Main where
 
@@ -39,6 +43,7 @@ import Database.PostgreSQL.Simple
 import Test.HUnit
 import qualified Data.Text.Lazy as TX
 import qualified Data.Text.Lazy.Encoding as TX
+import Options.Generic
 -- Parse file "application.conf" and get the DB connection info
 --makeDbConfig :: C.Config -> IO (Maybe Db.DbConfig)
 --makeDbConfig conf = do
@@ -51,6 +56,8 @@ import qualified Data.Text.Lazy.Encoding as TX
 
 -- The function knows which resources are available only for the
 -- authenticated users
+
+
 protectedResources ::  Request -> IO Bool
 protectedResources request = do
     let path = pathInfo request
@@ -60,7 +67,7 @@ protectedResources request = do
 
 
 test1 = TestCase (assertEqual "quicksort (quicksort [0,8,9,4,6,5,1])," [0,1,4,5,6,8,9] (quicksort [0,8,9,4,6,5,1]))
-test2 = TestCase (assertEqual "shift (shift [Just 4, Just 4])," [Just 8, Nothing] (shift [Just 4, Nothing]))
+test2 = TestCase (assertEqual "shift (shift [Just 4, Just 4])," [Just 8, Nothing] (shift [Just 4, Just 4]))
 test3 = TestCase (assertEqual "shift' (shift' [[Just 4, Just 4], [Nothing, Nothing]])," [[Just 8, Nothing], [Nothing, Nothing]] (shift' [[Just 4, Just 4], [Nothing, Nothing]]))
 test4 = TestCase (assertEqual "rotate (rotate [[Just 4, Just 4], [Nothing, Nothing]])," [[Nothing,Just 4],[Nothing,Just 4]] (rotate [[Just 4, Just 4], [Nothing, Nothing]]))
 tests = TestList [TestLabel "test1" test1, TestLabel "test2" test2, TestLabel "test1" test3, TestLabel "test2" test4]
@@ -88,6 +95,14 @@ getTurn:: Req -> TX.Text
 getTurn (Req _ turn) = turn
 
 
+data CliOpts w = CliOpts
+  { port :: w ::: Int <?> "Port to run server"
+  } deriving (Generic)
+
+instance ParseRecord (CliOpts Wrapped)
+deriving instance Show (CliOpts Unwrapped)
+
+
 main :: IO ()
 main = do
          runTestTT tests
@@ -97,7 +112,10 @@ main = do
          --      Nothing -> putStrLn "No database configuration found, terminating..."
          --      Just conf -> do
          --          pool <- createPool (newConn conf) close 1 40 10
-         scotty 3000 $ do
+
+         opts <- unwrapRecord "Eleusis server"
+
+         scotty (port opts) $ do
              middleware simpleCors
              get "/" $ do
                    json (Grid createRandomStartWithoutError)

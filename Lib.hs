@@ -177,6 +177,7 @@ quicksort (p:xs) = (quicksort lesser) ++ [p] ++ (quicksort greater)
         lesser  = filter (< p) xs
         greater = filter (>= p) xs
 
+
 toIntArr:: [Maybe Int] -> [Int]
 toIntArr (x:xs) | isNothing x = [0::Int] ++ toIntArr xs
                 | otherwise = [fromJust x] ++ toIntArr xs
