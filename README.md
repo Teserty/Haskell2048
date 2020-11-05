@@ -15,3 +15,19 @@ a move parallel to that row/column will combine the first two and last two.
 ##Types
 ###Grid
 [[Maybe Int]]
+
+
+##Funcs
+add :: [Int] -> [Int]
+
+pad :: [a] -> a -> Int -> [a]
+
+shift:: Line -> Line - Сдвиг линии с сложением чисел
+
+shift' :: Board -> Board - Сдвиг поля с сложением чисел
+
+rotate :: Board -> Board - Поворот поля
+
+make2DArrayFromArray:: Line -> Line -> Int -> Board - Двумерный массив из одномерного
+
+canMakeTurn::Board->Bool - Проверка на сущетсвование ходов
