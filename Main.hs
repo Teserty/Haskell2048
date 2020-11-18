@@ -118,13 +118,14 @@ main = do
          scotty (port opts) $ do
              middleware simpleCors
              get "/" $ do
-                   json (Grid createRandomStartWithoutError)
+                   json (Grid [[Just 2, Nothing, Nothing, Nothing],[Nothing, Nothing, Nothing, Just 2],[Nothing, Just 2, Nothing, Nothing],[Nothing, Nothing, Just 4, Nothing]])
+                   --json (Grid createRandomStartWithoutError)
              post "/" $ do
                    req <- jsonData:: ActionM Req
                    let newGrid = (makeTurn (getGrid req) (getTurn req))::[[Maybe Int]]
                    let can = (canMakeTurn newGrid) :: Bool
                    let sc = cscore newGrid
-                   json (Responce newGrid  can sc)
+                   json (Responce newGrid can sc)
 
 getReqParam :: ActionT TL.Text IO (Maybe Req)
 getReqParam = do b <- body

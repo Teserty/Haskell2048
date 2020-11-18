@@ -17,7 +17,10 @@ import Data.Aeson
 import Data.Maybe
 import Control.Applicative
 import GHC.Generics
-
+import Data.Time.Clock
+import Data.Time.Format.Internal
+import Data.Time.Format
+import System.IO.Unsafe
 
 type Tile = Maybe Int
 type Line = [Tile]
@@ -90,7 +93,7 @@ canMakeTurn grid = grid /= grid_d || grid /= grid_a || grid /= grid_w || grid /=
 
 
 getRandom :: Int -> Int
-getRandom i = fst (next (mkStdGen i)) `mod` i
+getRandom i = (unsafePerformIO ((read <$> formatTime defaultTimeLocale "%s" <$> getCurrentTime) :: IO Int)) `mod` i
 
 
 calculateNothings:: Board -> Int
@@ -105,10 +108,9 @@ calculate (x:xs) | isNothing x = 1 + if not (null xs) then calculate xs else 0
 
 addRandom:: Board -> Board
 addRandom grid = make2DArrayFromArray arr [] len
-
                  where
                     random = getRandom ((calculateNothings grid)::Int)
-                    len = length grid
+                    len = 4--length grid
                     arr = (helper1 (concat grid) random)::Line
 
 

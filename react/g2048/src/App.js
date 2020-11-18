@@ -78,6 +78,7 @@ function App() {
     }
     const classes = useStyles();
     const [grid, setGrid] = React.useState([[null, null, null, null], [null, null, null, null], [null, null, null, null], [null, null, null, null]]);
+
     return (
     <div className="App">
 
