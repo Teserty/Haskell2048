@@ -1,3 +1,11 @@
+# API
+get /field - получить состояние игры
+
+get /field/checkers - получить расположение шашек
+
+post /field - по идее должен отвечать за ход, но не работает пока
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
